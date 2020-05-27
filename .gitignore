@@ -1,0 +1,37 @@
+# swp files 
+*.sw[oap]
+.DS_Store
+
+# python
+__pycache__/
+*.py[cod]
+
+# C extensions 
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# environments
+.env
+.vent
+
+# jupyter
+.ipynb_checkpoints
