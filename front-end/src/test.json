@@ -1,0 +1,10 @@
+{
+  "long_videos": [
+  "http://visiongpu23.csail.mit.edu/scratch/datasets/DeepfakeDetection/facenet_smooth_frames/dfdc_train_part_7/mitkblyvjt.mp4/face_0.mp4"
+  ],
+  "crops": [
+  "http://visiongpu23.csail.mit.edu/scratch/datasets/DeepfakeDetection/facenet_smooth_frames/dfdc_train_part_7/jintynmhzu.mp4/face_0.mp4",
+  "http://visiongpu23.csail.mit.edu/scratch/datasets/DeepfakeDetection/facenet_smooth_frames/dfdc_train_part_6/avxatzklnf.mp4/face_0.mp4",
+  "http://visiongpu23.csail.mit.edu/scratch/datasets/DeepfakeDetection/facenet_smooth_frames/dfdc_train_part_7/mitkblyvjt.mp4/face_0.mp4"
+  ]
+}
