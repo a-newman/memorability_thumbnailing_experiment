@@ -29,9 +29,52 @@ const styles = theme => ({
     alignItems: 'center',
     padding: 16,
   },
+  buttonsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
+  leftButton: {
+    borderRadius: 16,
+    fontSize: 24,
+    marginRight: 8,
+  },
+  levelProgress: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  rightButton: {
+    borderRadius: 16,
+    fontSize: 24,
+    marginLeft: 8,
+  },
   textField: {
     minWidth: 256,
-    width: "50%"
+    width: "50%",
+    marginBottom: 16,
+  },
+  textFieldContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  textSubmitButton: {
+    borderRadius: 16,
+    fontSize: 24,
+    margin: 8,
+  },
+  topSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+  },
+  videoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 });
 
@@ -39,6 +82,7 @@ class Interface extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      completed: false,
       cropSection: false,
       cropVideos: data["crops"],
       currentIndex: 0,
@@ -49,7 +93,7 @@ class Interface extends Component {
       textInput: "",
       timer: Date.now(),
       videoEnded: false,
-      videoSize: 200,
+      videoSize: 360,
     };
 
     this.videoRef = React.createRef();
@@ -96,6 +140,7 @@ class Interface extends Component {
       this.setState({
         videoEnded: false,
         cropSection: true,
+        currentIndex: 0,
         percent: 0,
       }, () => this._loadCropVideos());
     }
@@ -140,6 +185,7 @@ class Interface extends Component {
     })
     if (this.state.currentIndex === this.state.cropVideos.length - 1) {
       console.log("results: ", this.state.results);
+      this.setState({completed: true});
       this._submitHITform();
     }
     this.setState({
@@ -154,6 +200,7 @@ class Interface extends Component {
     })
     if (this.state.currentIndex === this.state.cropVideos.length - 1) {
       console.log("results: ", this.state.results);
+      this.setState({completed: true});
       this._submitHITform();
     }
     this.setState({
@@ -207,7 +254,8 @@ class Interface extends Component {
     const { classes } = this.props;
     const { cropSection, cropVideos, currentIndex,
       longVideos, percent, textFieldButtonText,
-      textInput, videoEnded, videoSize } = this.state;
+      textInput, videoEnded, videoSize,
+      completed } = this.state;
     
     return (
       <MuiThemeProvider theme={THEME}>
@@ -216,6 +264,11 @@ class Interface extends Component {
           <div className={classes.topSection}>
             <Typography variant="h2" style={{marginBottom: 16}}>
               Most Memorable Moment
+            </Typography>
+            <Typography variant="subtitle1" align="center" style={{marginBottom: 16}}>
+              <b>Instructions:</b> <br />
+              Please watch the entire video, then write a description
+              about the video of more than 8 words.
             </Typography>
             <div className={classes.levelProgress}>
               <Typography variant="caption">
@@ -242,11 +295,12 @@ class Interface extends Component {
             {
               videoEnded ?
                 <div className={classes.textFieldContainer}>
-                  <form className={classes.textField} noValidate autoComplete="off">
+                  <form noValidate autoComplete="off">
                     <TextField
                       id="outlined-multiline-static"
-                      label="Multiline"
+                      label="Enter Description"
                       multiline
+                      className={classes.textField}
                       rows={4}
                       defaultValue={textInput}
                       onChange={this._handleTextChange}
@@ -274,14 +328,21 @@ class Interface extends Component {
                         muted
                         loop
                       />
-                      <div className={classes.buttonsContainer}>
-                        <Button variant="contained" onClick={this._notSeenVideoClip}>
-                          Haven't Seen Clip
-                        </Button>
-                        <Button variant="contained" onClick={this._seenVideoClip}>
-                          Seen Video Clip
-                        </Button>
-                      </div>
+                      {
+                        completed ?
+                          <Typography style={{marginTop: 16}} variant="h5" align="center" gutterBottom>
+                            Thank you for completing the experiment.
+                          </Typography>
+                        :
+                          <div className={classes.buttonsContainer}>
+                            <Button variant="contained" className={classes.leftButton} onClick={this._notSeenVideoClip}>
+                              Haven't Seen Clip
+                            </Button>
+                            <Button variant="contained" className={classes.rightButton} onClick={this._seenVideoClip}>
+                              Seen Video Clip
+                            </Button>
+                          </div>
+                      }
                     </div> 
                   :
                     <div className={classes.videoContainer}>

@@ -7,7 +7,7 @@ import "./App.css";
 function App() {
 
   return (
-    <Router basename="/dfclick">
+    <Router basename="/memorability_thumbnailing_experiment">
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route path="/interface" component={Interface} />
