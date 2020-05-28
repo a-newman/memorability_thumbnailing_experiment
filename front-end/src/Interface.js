@@ -92,6 +92,7 @@ class Interface extends Component {
       cropVideos: data["crops"],
       currentIndex: 0,
       data: data,
+      filename: "",
       longVideos: data["long_videos"],
       percent: 0,
       results: {"video_captions": [], "crop_choice": []},
@@ -127,6 +128,7 @@ class Interface extends Component {
         cropVideos: data["crops"],
         percent: 0,
         data: data,
+        filename: file,
       })
     }
 
@@ -237,6 +239,7 @@ class Interface extends Component {
     this._addHiddenField(form, 'taskTime', (Date.now() - this.state.timer)/1000);
     this._addHiddenField(form, 'feedback', $("#feedback-input").val());
     this.state.results["data"] = this.state.data;
+    this.state.results["filename"] = this.state.filename;
     var results = {
         'outputs': this.state.results,
     };
