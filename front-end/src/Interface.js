@@ -346,7 +346,6 @@ class Interface extends Component {
                             ref={this.videoRef}
                             autoPlay
                             muted
-                            controls
                           />
 
                         :
@@ -377,7 +376,6 @@ class Interface extends Component {
                         ref={this.videoRef}
                         autoPlay
                         muted
-                        controls
                       />
                     </div> 
                 )
