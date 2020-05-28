@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/memorability_thumbnailing_experiment/static/css/main.0c50e872.chunk.css",
-    "main.js": "/memorability_thumbnailing_experiment/static/js/main.a8dd86d5.chunk.js",
-    "main.js.map": "/memorability_thumbnailing_experiment/static/js/main.a8dd86d5.chunk.js.map",
+    "main.js": "/memorability_thumbnailing_experiment/static/js/main.99dc7dc2.chunk.js",
+    "main.js.map": "/memorability_thumbnailing_experiment/static/js/main.99dc7dc2.chunk.js.map",
     "runtime-main.js": "/memorability_thumbnailing_experiment/static/js/runtime-main.86fb9ae7.js",
     "runtime-main.js.map": "/memorability_thumbnailing_experiment/static/js/runtime-main.86fb9ae7.js.map",
     "static/css/2.55146207.chunk.css": "/memorability_thumbnailing_experiment/static/css/2.55146207.chunk.css",
-    "static/js/2.a452f0fe.chunk.js": "/memorability_thumbnailing_experiment/static/js/2.a452f0fe.chunk.js",
-    "static/js/2.a452f0fe.chunk.js.map": "/memorability_thumbnailing_experiment/static/js/2.a452f0fe.chunk.js.map",
+    "static/js/2.bad41178.chunk.js": "/memorability_thumbnailing_experiment/static/js/2.bad41178.chunk.js",
+    "static/js/2.bad41178.chunk.js.map": "/memorability_thumbnailing_experiment/static/js/2.bad41178.chunk.js.map",
     "index.html": "/memorability_thumbnailing_experiment/index.html",
-    "precache-manifest.a37ef8356f5e495b7d8a394578e904e9.js": "/memorability_thumbnailing_experiment/precache-manifest.a37ef8356f5e495b7d8a394578e904e9.js",
+    "precache-manifest.2326c69fc2461cd1d6ef9fea83ccf58e.js": "/memorability_thumbnailing_experiment/precache-manifest.2326c69fc2461cd1d6ef9fea83ccf58e.js",
     "service-worker.js": "/memorability_thumbnailing_experiment/service-worker.js",
     "static/css/2.55146207.chunk.css.map": "/memorability_thumbnailing_experiment/static/css/2.55146207.chunk.css.map",
     "static/css/main.0c50e872.chunk.css.map": "/memorability_thumbnailing_experiment/static/css/main.0c50e872.chunk.css.map",
-    "static/js/2.a452f0fe.chunk.js.LICENSE.txt": "/memorability_thumbnailing_experiment/static/js/2.a452f0fe.chunk.js.LICENSE.txt"
+    "static/js/2.bad41178.chunk.js.LICENSE.txt": "/memorability_thumbnailing_experiment/static/js/2.bad41178.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.86fb9ae7.js",
     "static/css/2.55146207.chunk.css",
-    "static/js/2.a452f0fe.chunk.js",
+    "static/js/2.bad41178.chunk.js",
     "static/css/main.0c50e872.chunk.css",
-    "static/js/main.a8dd86d5.chunk.js"
+    "static/js/main.99dc7dc2.chunk.js"
   ]
 }
