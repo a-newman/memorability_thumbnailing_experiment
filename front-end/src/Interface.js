@@ -426,6 +426,8 @@ class Interface extends Component {
                 )
             }
           </div>
+          <form id="submit-form" name="submit-form">
+          </form>
           <Typography className={classes.irb} variant="caption">
             This HIT is part of a MIT scientific research project. Your decision to complete this HIT is voluntary. There is no way for us to identify you. The only information we will have, in addition to your responses, is the time at which you completed the study. The results of the research may be presented at scientific meetings or published in scientific journals. Clicking on the 'SUBMIT' button on the bottom of this page indicates that you are at least 18 years of age and agree to complete this HIT voluntarily.
           </Typography>
