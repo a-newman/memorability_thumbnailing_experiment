@@ -48,8 +48,11 @@ export default function Landing(props) {
         <Typography variant="subtitle-1">
           <b> Part 1: Watch videos.</b> You will watch a sequence of 30-second videos. Please pay careful attention to each video. After each video, you will be asked to write a one-sentence description of what happened in the video.
           <br/><br/>
-          <b>Take a break.</b> You will be asked to take a break for at least 10 minutes. During this time, leave the page open, but you may do anything you like during this time (including doing other HITs). 
+          <b>Take a break.</b> You will be asked to take a break for at least 10 minutes. During this time, leave the page open, but you may do anything you like during this time (for example, doing other HITs). 
+          <br/><br/>
           <b> Part 2: Memory test.</b> You will watch a sequence of short 3-second video clips. You will see each clip only once. You will be asked to select whether the clip came from a video that you saw in Part 1 or not. 
+          <br/><br/>
+          The task should take around 30 minutes total to complete (20 minutes of activity + 10 minute break).
         </Typography>
       </div>
       <div className={classes.bottomContainer}>
