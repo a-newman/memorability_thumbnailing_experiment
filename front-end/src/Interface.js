@@ -105,7 +105,7 @@ class Interface extends Component {
       timer: Date.now(),
       videoEnded: false,
       videoEnded2: false,
-      videoSize: 480,
+      videoSize: 800,
     };
 
     this.videoRef = React.createRef();
