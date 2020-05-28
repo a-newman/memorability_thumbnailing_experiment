@@ -112,43 +112,47 @@ def crop_video(vid_path, start_crop, savepath, duration=3):
 
 
 def select_long_videos(n=16):
-    lens = load_lens()
+    # lens = load_lens()
 
-    vids = [elt for elt in lens if elt[0] >= 28 and elt[0] <= 32]
-    print(len(vids))
+    # vids = [elt for elt in lens if elt[0] >= 28 and elt[0] <= 32]
+    # print(len(vids))
 
-    # select vids w/ highest mem score std. dev.
-    scores = load_mems()
-    vars = []
+    # # select vids w/ highest mem score std. dev.
+    # scores = load_mems()
+    # vars = []
 
-    for elt in vids:
-        length, vidname = elt
-        mem_scores = scores[vidname]["mems"]
-        stddev = np.std(mem_scores)
-        vars.append([stddev, vidname])
+    # for elt in vids:
+    #     length, vidname = elt
+    #     mem_scores = scores[vidname]["mems"]
+    #     stddev = np.std(mem_scores)
+    #     vars.append([stddev, vidname])
 
-    vars.sort()
+    # vars.sort()
 
-    vids_to_select = []
+    # vids_to_select = []
 
-    for vid in vars[::-1]:
-        _, vidname = vid
+    # for vid in vars[::-1]:
+    #     _, vidname = vid
 
-        has_overlap = overlapping_mem_and_center_crop(vidname,
-                                                      scores[vidname]["mems"])
+    #     has_overlap = overlapping_mem_and_center_crop(vidname,
+    #                                                   scores[vidname]["mems"])
 
-        has_good_ar = get_vid_aspect_ratio(
-            os.path.join(OOPS_PATH, vidname + ".mp4")) > 1
+    #     has_good_ar = get_vid_aspect_ratio(
+    #         os.path.join(OOPS_PATH, vidname + ".mp4")) > 1
 
-        if (not has_overlap) and has_good_ar:
-            vids_to_select.append(vidname)
-        else:
-            print("{}: {}, {}".format(vidname, has_overlap, has_good_ar))
+    #     if (not has_overlap) and has_good_ar:
+    #         vids_to_select.append(vidname)
+    #     else:
+    #         print("{}: {}, {}".format(vidname, has_overlap, has_good_ar))
 
-        if len(vids_to_select) == n:
-            break
+    #     if len(vids_to_select) == n:
+    #         break
 
-    # clear the folder
+    # # clear the folder
+    with open("target_vids.json") as infile:
+        vids_to_select = json.load(infile)
+
+    assert len(vids_to_select) == 16
 
     if os.path.exists(LONG_VIDS_PATH):
         shutil.rmtree(LONG_VIDS_PATH)
@@ -244,6 +248,6 @@ def make_filler_crops(n=200):
 
 
 if __name__ == "__main__":
-    # select_long_videos()
-    # make_target_crops()
+    select_long_videos()
+    make_target_crops()
     make_filler_crops()
