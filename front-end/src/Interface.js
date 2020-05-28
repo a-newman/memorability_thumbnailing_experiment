@@ -5,9 +5,12 @@ import { Button, TextField, Typography } from '@material-ui/core';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 
-import data from "./test.json";
+import data from "./subject_files/0.json";
+//let data = require("data/0.json");
+// import data from "./test.json"
 
 const MTURK_SUBMIT_SUFFIX = "/mturk/externalSubmit";
+const DATA_PATH = "data/"
 
 const THEME = createMuiTheme({
   typography: {
@@ -86,6 +89,7 @@ const styles = theme => ({
 class Interface extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       completed: false,
       cropSection: false,
@@ -120,17 +124,22 @@ class Interface extends Component {
   componentDidMount() {
     var url = window.location.href;
     var identifier = "data";
+    var file;
     if (url.indexOf(identifier) > 0) {
-      var file = this._gup(identifier);
-      var data = require('./' + file + '.json');
-      this.setState({
-        longVideos: data["long_videos"],
-        cropVideos: data["crops"],
-        percent: 0,
-        data: data,
-        filename: file,
-      })
+      file = this._gup(identifier);
+    } else {
+      var sfNumber = Math.floor(Math.random()*1000)
+      file = "subject_files/" + sfNumber
     }
+    console.log("Loading file", file)
+    var data = require('./' + file + '.json');
+    this.setState({
+      longVideos: data["long_videos"],
+      cropVideos: data["crops"],
+      percent: 0,
+      data: data,
+      filename: file,
+    })
 
     // Video stuff
     const vid = this.videoRef.current;
