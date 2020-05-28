@@ -5,9 +5,9 @@ import { Button, TextField, Typography } from '@material-ui/core';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 
-// import data from "./subject_files/0.json";
+import data from "./subject_files/0.json";
 //let data = require("data/0.json");
-import data from "./test.json"
+// import data from "./test.json"
 
 const MTURK_SUBMIT_SUFFIX = "/mturk/externalSubmit";
 const DATA_PATH = "data/"
