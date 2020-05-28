@@ -34,6 +34,11 @@ const styles = theme => ({
     justifyContent: 'center',
     marginTop: 16,
   },
+  countdownTimer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   irb: {
     width: "70%",
     textAlign: "center",
@@ -88,10 +93,12 @@ class Interface extends Component {
     super(props);
     this.state = {
       completed: false,
+      countdown: false,
       cropSection: false,
       cropVideos: data["crops"],
       currentIndex: 0,
       data: data,
+      disableButton: true,
       filename: "",
       longVideos: data["long_videos"],
       percent: 0,
@@ -114,6 +121,7 @@ class Interface extends Component {
     this._loadNextVideo = this._loadNextVideo.bind(this);
     this._seenVideoClip = this._seenVideoClip.bind(this);
     this._notSeenVideoClip = this._notSeenVideoClip.bind(this);
+    this._completeCountdown = this._completeCountdown.bind(this);
   
   }
 
@@ -154,13 +162,11 @@ class Interface extends Component {
       this._loadNextVideo();
     } else if (this.state.textFieldButtonText == "Continue to Next Section") {
       this.setState({
+        countdown: true,
         videoEnded: false,
         cropSection: true,
         currentIndex: 0,
         percent: 0,
-      }, () => {
-        const vid = this.videoRef.current;
-        vid.addEventListener('ended', this._setVideoEnded2, false);
       });
     }
   }
@@ -271,14 +277,23 @@ class Interface extends Component {
     });
   }
   
-
+  _completeCountdown() {
+    this.setState({
+      countdown: false,
+    }, () => {
+      const vid = this.videoRef.current;
+      vid.addEventListener('ended', this._setVideoEnded2, false);
+    })
+  }
+  
   render() {
     const { classes } = this.props;
     const { cropSection, cropVideos, currentIndex,
       longVideos, percent, textFieldButtonText,
       textInput, videoEnded, videoSize,
-      completed, videoEnded2 } = this.state;
-    
+      completed, videoEnded2, disableButton,
+      countdown } = this.state;
+
     return (
       <MuiThemeProvider theme={THEME}>
         <div className={classes.root}>
@@ -338,47 +353,59 @@ class Interface extends Component {
                 </div>
               :
                 (
-                  cropSection ?
-                    <div className={classes.videoContainer}>
-                      {!videoEnded2 ?
+                  countdown ? 
+                    <div className={classes.countdownTimer}>
+                      <Counter
+                        countdownComplete={() => this.setState({disableButton: false})}
+                        clickFunction={this._completeCountdown}
+                        disableButton={disableButton}
+                        textFieldButtonText={textFieldButtonText} 
+                      />               
+                    </div>  
+                  :
+                    (
+                      cropSection ?
+                        <div className={classes.videoContainer}>
+                          {!videoEnded2 ?
+                              <video
+                                id="myVideo"
+                                src={cropVideos[currentIndex]}
+                                width={videoSize}
+                                ref={this.videoRef}
+                                autoPlay
+                                muted
+                              />
+
+                            :
+                              (
+                                completed ?
+                                  <Typography style={{marginTop: 16}} variant="h5" align="center" gutterBottom>
+                                    Thank you for completing the experiment.
+                                  </Typography>
+                                :
+                                  <div className={classes.buttonsContainer}>
+                                    <Button variant="contained" className={classes.leftButton} onClick={this._notSeenVideoClip}>
+                                      Haven't Seen Clip
+                                    </Button>
+                                    <Button variant="contained" className={classes.rightButton} onClick={this._seenVideoClip}>
+                                      Seen Video Clip
+                                    </Button>
+                                  </div>
+                              )
+                        }
+                        </div> 
+                      :
+                        <div className={classes.videoContainer}>
                           <video
                             id="myVideo"
-                            src={cropVideos[currentIndex]}
+                            src={longVideos[currentIndex]}
                             width={videoSize}
                             ref={this.videoRef}
                             autoPlay
                             muted
                           />
-
-                        :
-                          (
-                            completed ?
-                              <Typography style={{marginTop: 16}} variant="h5" align="center" gutterBottom>
-                                Thank you for completing the experiment.
-                              </Typography>
-                            :
-                              <div className={classes.buttonsContainer}>
-                                <Button variant="contained" className={classes.leftButton} onClick={this._notSeenVideoClip}>
-                                  Haven't Seen Clip
-                                </Button>
-                                <Button variant="contained" className={classes.rightButton} onClick={this._seenVideoClip}>
-                                  Seen Video Clip
-                                </Button>
-                              </div>
-                          )
-                    }
-                    </div> 
-                  :
-                    <div className={classes.videoContainer}>
-                      <video
-                        id="myVideo"
-                        src={longVideos[currentIndex]}
-                        width={videoSize}
-                        ref={this.videoRef}
-                        autoPlay
-                        muted
-                      />
-                    </div> 
+                        </div> 
+                    )
                 )
             }
           </div>
@@ -389,6 +416,36 @@ class Interface extends Component {
       </MuiThemeProvider>
     )
   }
+}
+
+function Counter(props) {
+  const [counter, setCounter] = React.useState(599);
+  React.useEffect(() => {
+    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+    if (counter === 0) {
+      props.countdownComplete();
+    }
+  }, [counter]);
+
+  return (
+    <React.Fragment>
+      <Typography variant="h5" align="center">
+        You will now take a 10 minute break before completing the next section.
+        <br />
+        Please feel free to do other tasks before returning to this task. 
+        <br />
+        You will be able to click the button to continue once the timer reaches 0.
+      </Typography>
+      <Typography variant="h2">
+        Countdown: {Math.floor(counter / 60)}:{counter % 60 < 10 ? "0" + counter % 60 : counter % 60}
+      </Typography>
+      <Button variant="contained" 
+              disabled={props.disableButton}
+              onClick={props.clickFunction}>
+        {props.textFieldButtonText}
+      </Button>
+    </React.Fragment>
+  );
 }
 
 export default withStyles(styles)(Interface);
