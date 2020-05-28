@@ -93,17 +93,18 @@ class Interface extends Component {
       textInput: "",
       timer: Date.now(),
       videoEnded: false,
+      videoEnded2: false,
       videoSize: 360,
     };
 
     this.videoRef = React.createRef();
 
     this._setVideoEnded = this._setVideoEnded.bind(this);
+    this._setVideoEnded2 = this._setVideoEnded2.bind(this);
     this._submitHITform = this._submitHITform.bind(this);
     this._handleTextChange = this._handleTextChange.bind(this);
     this._handleButtonClick = this._handleButtonClick.bind(this);
     this._loadNextVideo = this._loadNextVideo.bind(this);
-    this._loadCropVideos = this._loadCropVideos.bind(this);
     this._seenVideoClip = this._seenVideoClip.bind(this);
     this._notSeenVideoClip = this._notSeenVideoClip.bind(this);
   
@@ -133,6 +134,12 @@ class Interface extends Component {
     })
   }
 
+  _setVideoEnded2() {
+    this.setState({
+      videoEnded2: true,
+    })
+  }
+
   _handleButtonClick() {
     if (this.state.textFieldButtonText === "Next") {
       this._loadNextVideo();
@@ -142,19 +149,16 @@ class Interface extends Component {
         cropSection: true,
         currentIndex: 0,
         percent: 0,
-      }, () => this._loadCropVideos());
+      }, () => {
+        const vid = this.videoRef.current;
+        vid.addEventListener('ended', this._setVideoEnded2, false);
+      });
     }
   }
 
-  _loadCropVideos() {
-    console.log("called", this.state);
-    const vid = this.videoRef.current;
-    vid.removeEventListener("ended", this._setVideoEnded, false)  
-  }
-
   _loadNextVideo() {
-    if (this.state.textInput.length < 10) {
-      alert("Please enter a description of the video before continuing.");
+    if (this.state.textInput.split(" ").length < 8) {
+      alert("Please enter a description of the video before continuing with at least 8 words.");
       return;
     }
     this.setState({
@@ -174,7 +178,7 @@ class Interface extends Component {
     }, () => {
        // Video stuff
       const vid = this.videoRef.current;
-      vid.addEventListener('ended', this._setVideoEnded, false)
+      vid.addEventListener('ended', this._setVideoEnded, false);
     });
   }
 
@@ -185,11 +189,16 @@ class Interface extends Component {
     })
     if (this.state.currentIndex === this.state.cropVideos.length - 1) {
       console.log("results: ", this.state.results);
-      this.setState({completed: true});
+      this.setState({completed: true, videoEnded2: true});
       this._submitHITform();
+      return;
     }
     this.setState({
       currentIndex: this.state.currentIndex + 1,
+      videoEnded2: false,
+    }, () => {
+      const vid = this.videoRef.current;
+      vid.addEventListener('ended', this._setVideoEnded2, false);
     })
   }
 
@@ -200,11 +209,16 @@ class Interface extends Component {
     })
     if (this.state.currentIndex === this.state.cropVideos.length - 1) {
       console.log("results: ", this.state.results);
-      this.setState({completed: true});
+      this.setState({completed: true, videoEnded2: true});
       this._submitHITform();
+      return;
     }
     this.setState({
       currentIndex: this.state.currentIndex + 1,
+      videoEnded2: false,
+    }, () => {
+      const vid = this.videoRef.current;
+      vid.addEventListener('ended', this._setVideoEnded2, false);
     })
   }
 
@@ -255,7 +269,7 @@ class Interface extends Component {
     const { cropSection, cropVideos, currentIndex,
       longVideos, percent, textFieldButtonText,
       textInput, videoEnded, videoSize,
-      completed } = this.state;
+      completed, videoEnded2 } = this.state;
     
     return (
       <MuiThemeProvider theme={THEME}>
@@ -318,31 +332,35 @@ class Interface extends Component {
                 (
                   cropSection ?
                     <div className={classes.videoContainer}>
-                      <video
-                        id="myVideo"
-                        src={cropVideos[currentIndex]}
-                        width={videoSize}
-                        height={videoSize}
-                        ref={this.videoRef}
-                        autoPlay
-                        muted
-                        loop
-                      />
-                      {
-                        completed ?
-                          <Typography style={{marginTop: 16}} variant="h5" align="center" gutterBottom>
-                            Thank you for completing the experiment.
-                          </Typography>
+                      {!videoEnded2 ?
+                          <video
+                            id="myVideo"
+                            src={cropVideos[currentIndex]}
+                            width={videoSize}
+                            height={videoSize}
+                            ref={this.videoRef}
+                            autoPlay
+                            muted
+                            controls
+                          />
+
                         :
-                          <div className={classes.buttonsContainer}>
-                            <Button variant="contained" className={classes.leftButton} onClick={this._notSeenVideoClip}>
-                              Haven't Seen Clip
-                            </Button>
-                            <Button variant="contained" className={classes.rightButton} onClick={this._seenVideoClip}>
-                              Seen Video Clip
-                            </Button>
-                          </div>
-                      }
+                          (
+                            completed ?
+                              <Typography style={{marginTop: 16}} variant="h5" align="center" gutterBottom>
+                                Thank you for completing the experiment.
+                              </Typography>
+                            :
+                              <div className={classes.buttonsContainer}>
+                                <Button variant="contained" className={classes.leftButton} onClick={this._notSeenVideoClip}>
+                                  Haven't Seen Clip
+                                </Button>
+                                <Button variant="contained" className={classes.rightButton} onClick={this._seenVideoClip}>
+                                  Seen Video Clip
+                                </Button>
+                              </div>
+                          )
+                    }
                     </div> 
                   :
                     <div className={classes.videoContainer}>
@@ -354,6 +372,7 @@ class Interface extends Component {
                         ref={this.videoRef}
                         autoPlay
                         muted
+                        controls
                       />
                     </div> 
                 )
