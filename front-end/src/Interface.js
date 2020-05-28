@@ -91,6 +91,7 @@ class Interface extends Component {
       cropSection: false,
       cropVideos: data["crops"],
       currentIndex: 0,
+      data: data,
       longVideos: data["long_videos"],
       percent: 0,
       results: {"video_captions": [], "crop_choice": []},
@@ -99,7 +100,7 @@ class Interface extends Component {
       timer: Date.now(),
       videoEnded: false,
       videoEnded2: false,
-      videoSize: 360,
+      videoSize: 480,
     };
 
     this.videoRef = React.createRef();
@@ -125,6 +126,7 @@ class Interface extends Component {
         longVideos: data["long_videos"],
         cropVideos: data["crops"],
         percent: 0,
+        data: data,
       })
     }
 
@@ -193,7 +195,6 @@ class Interface extends Component {
       percent: Math.min(this.state.percent + 100/this.state.cropVideos.length, 100),
     })
     if (this.state.currentIndex === this.state.cropVideos.length - 1) {
-      console.log("results: ", this.state.results);
       this.setState({completed: true, videoEnded2: true});
       this._submitHITform();
       return;
@@ -213,7 +214,6 @@ class Interface extends Component {
       percent: Math.min(this.state.percent + 100/this.state.cropVideos.length, 100),
     })
     if (this.state.currentIndex === this.state.cropVideos.length - 1) {
-      console.log("results: ", this.state.results);
       this.setState({completed: true, videoEnded2: true});
       this._submitHITform();
       return;
@@ -236,7 +236,7 @@ class Interface extends Component {
     this._addHiddenField(form, 'workerId', this._gup("workerId"));
     this._addHiddenField(form, 'taskTime', (Date.now() - this.state.timer)/1000);
     this._addHiddenField(form, 'feedback', $("#feedback-input").val());
-
+    this.state.results["data"] = this.state.data;
     var results = {
         'outputs': this.state.results,
     };
@@ -342,7 +342,6 @@ class Interface extends Component {
                             id="myVideo"
                             src={cropVideos[currentIndex]}
                             width={videoSize}
-                            height={videoSize}
                             ref={this.videoRef}
                             autoPlay
                             muted
@@ -372,7 +371,6 @@ class Interface extends Component {
                         id="myVideo"
                         src={longVideos[currentIndex]}
                         width={videoSize}
-                        height={videoSize}
                         ref={this.videoRef}
                         autoPlay
                         muted
