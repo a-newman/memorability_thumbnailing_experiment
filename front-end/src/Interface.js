@@ -118,7 +118,7 @@ class Interface extends Component {
       this.setState({
         longVideos: data["long_videos"],
         cropVideos: data["crops"],
-        percent: Math.round(Math.min((0) / data["long_videos"].length * 100, 100)),
+        percent: 0,
       })
     }
 
