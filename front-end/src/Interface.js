@@ -287,6 +287,17 @@ class Interface extends Component {
       longVideos, percent, textFieldButtonText,
       textInput, videoEnded, videoSize,
       completed, videoEnded2 } = this.state;
+    const instructions = cropSection
+      ? (<div>
+        <b>Part 2 Instructions:</b> <br /> 
+        Please watch the short video clip, then indicate whether it came
+        from one of the videos you saw in Part 1 or not.
+      </div>)
+      : (<div>
+        <b>Part 1 Instructions:</b> <br /> 
+        Please watch the entire video, then write a description 
+        about the video of more than 8 words.
+      </div>)
     
     return (
       <MuiThemeProvider theme={THEME}>
@@ -294,12 +305,10 @@ class Interface extends Component {
 
           <div className={classes.topSection}>
             <Typography variant="h2" style={{marginBottom: 16}}>
-              Most Memorable Moment
+              Memorable Moments
             </Typography>
             <Typography variant="subtitle1" align="center" style={{marginBottom: 16}}>
-              <b>Instructions:</b> <br />
-              Please watch the entire video, then write a description
-              about the video of more than 8 words.
+              {instructions}
             </Typography>
             <div className={classes.levelProgress}>
               <Typography variant="caption">
